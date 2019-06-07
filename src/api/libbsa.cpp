@@ -209,6 +209,8 @@ LIBBSA void bsa_close(bsa_handle bh) {
    Content Reading Functions
 ------------------------------*/
 
+LIBBSA const std::list<libbsa::BsaAsset> &bsa_get_raw_assets(bsa_handle bh) {return bh->getBsa()->GetAssets();}
+
 LIBBSA unsigned int bsa_get_assets(bsa_handle bh,
                                    const char * const assetRegex,
                                    const char * const ** const assetPaths,

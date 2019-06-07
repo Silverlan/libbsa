@@ -45,6 +45,8 @@ namespace libbsa {
         });
     }
 
+    const std::list<BsaAsset> &GenericBsa::GetAssets() const {return assets;}
+
     BsaAsset GenericBsa::GetAsset(const std::string& assetPath) const {
         std::string normalisedAssetPath = NormaliseAssetPath(assetPath);
 

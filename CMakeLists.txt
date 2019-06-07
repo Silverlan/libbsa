@@ -12,8 +12,10 @@ cmake_minimum_required (VERSION 2.8)
 project (libbsa)
 include(ExternalProject)
 
+add_definitions(-DBOOST_ALL_DYN_LINK)
+
 option(BUILD_SHARED_LIBS "Build a shared library" ON)
-option(PROJECT_STATIC_RUNTIME "Build with static runtime libs (/MT)" ON)
+option(PROJECT_STATIC_RUNTIME "Build with static runtime libs (/MT)" OFF)
 
 ExternalProject_Add(zlib
                     PREFIX "external"
@@ -43,43 +45,43 @@ ExternalProject_Add(testing-plugins
                     BUILD_COMMAND ""
                     INSTALL_COMMAND "")
 
-set (Boost_USE_STATIC_LIBS ${PROJECT_STATIC_RUNTIME})
+set (Boost_USE_STATIC_LIBS OFF)
 set (Boost_USE_MULTITHREADED ON)
-set (Boost_USE_STATIC_RUNTIME ${PROJECT_STATIC_RUNTIME})
+set (Boost_USE_STATIC_RUNTIME OFF)
 
 find_package(Boost REQUIRED COMPONENTS iostreams filesystem system locale)
 
-set (PROJECT_SRC "${CMAKE_SOURCE_DIR}/src/api/_bsa_handle_int.cpp"
-                 "${CMAKE_SOURCE_DIR}/src/api/genericbsa.cpp"
-                 "${CMAKE_SOURCE_DIR}/src/api/libbsa.cpp"
-                 "${CMAKE_SOURCE_DIR}/src/api/tes3bsa.cpp"
-                 "${CMAKE_SOURCE_DIR}/src/api/tes4bsa.cpp")
+set (PROJECT_SRC "${CMAKE_CURRENT_LIST_DIR}/src/api/_bsa_handle_int.cpp"
+                 "${CMAKE_CURRENT_LIST_DIR}/src/api/genericbsa.cpp"
+                 "${CMAKE_CURRENT_LIST_DIR}/src/api/libbsa.cpp"
+                 "${CMAKE_CURRENT_LIST_DIR}/src/api/tes3bsa.cpp"
+                 "${CMAKE_CURRENT_LIST_DIR}/src/api/tes4bsa.cpp")
 
-set (PROJECT_HEADERS "${CMAKE_SOURCE_DIR}/include/libbsa/libbsa.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/_bsa_handle_int.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/bsa_asset.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/error.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/genericbsa.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/tes3bsa.h"
-                     "${CMAKE_SOURCE_DIR}/src/api/tes4bsa.h")
+set (PROJECT_HEADERS "${CMAKE_CURRENT_LIST_DIR}/include/libbsa/libbsa.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/_bsa_handle_int.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/bsa_asset.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/error.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/genericbsa.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/tes3bsa.h"
+                     "${CMAKE_CURRENT_LIST_DIR}/src/api/tes4bsa.h")
 
-set (TEST_SRC "${CMAKE_SOURCE_DIR}/src/test/main.cpp")
+set (TEST_SRC "${CMAKE_CURRENT_LIST_DIR}/src/test/main.cpp")
 
-set (TEST_HEADERS "${CMAKE_SOURCE_DIR}/src/test/bsa_calc_checksum_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_contains_asset_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_extract_asset_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_extract_asset_to_memory_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_extract_assets_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_get_assets_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_handle_operation_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_open_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/bsa_save_test.h"
-                  "${CMAKE_SOURCE_DIR}/src/test/libbsa_test.h")
+set (TEST_HEADERS "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_calc_checksum_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_contains_asset_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_extract_asset_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_extract_asset_to_memory_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_extract_assets_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_get_assets_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_handle_operation_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_open_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/bsa_save_test.h"
+                  "${CMAKE_CURRENT_LIST_DIR}/src/test/libbsa_test.h")
 
 source_group("Header Files" FILES ${PROJECT_HEADERS} ${TEST_HEADERS})
 
-include_directories("${CMAKE_SOURCE_DIR}/src"
-                    "${CMAKE_SOURCE_DIR}/include"
+include_directories("${CMAKE_CURRENT_LIST_DIR}/src"
+                    "${CMAKE_CURRENT_LIST_DIR}/include"
                     ${Boost_INCLUDE_DIRS}
                     ${GTEST_INCLUDE_DIRS}
                     ${ZLIB_INCLUDE_DIRS})
@@ -115,8 +117,8 @@ IF (MSVC)
         ENDFOREACH()
     ENDIF ()
 
-    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:MSVCRTD")
-    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} /NODEFAULTLIB:MSVCRT /NODEFAULTLIB:MSVCRTD")
+    set (CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
+    set (CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}")
 ENDIF ()
 
 ##############################
@@ -166,6 +168,6 @@ IF (DOXYGEN_FOUND AND LATEX_FOUND)
     # Run Doxygen and LaTeX to generate readme
     add_custom_command(TARGET bsa POST_BUILD
         COMMAND ${DOXYGEN_EXECUTABLE} Doxyfile
-        COMMAND "${CMAKE_SOURCE_DIR}/docs/latex/make.bat"
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}/docs")
+        COMMAND "${CMAKE_CURRENT_LIST_DIR}/docs/latex/make.bat"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_LIST_DIR}/docs")
 ENDIF ()

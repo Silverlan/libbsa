@@ -45,6 +45,7 @@ namespace libbsa {
         bool HasAsset(const std::string& assetPath) const;
         BsaAsset GetAsset(const std::string& assetPath) const;
         std::vector<BsaAsset> GetMatchingAssets(const std::regex& regex) const;
+        const std::list<BsaAsset> &GetAssets() const;
 
         void Extract(const std::string& assetPath,
                      const uint8_t ** const data,

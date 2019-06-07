@@ -73,6 +73,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <list>
 
 #if defined(_MSC_VER)
 //MSVC doesn't support C99, so do the stdbool.h definitions ourselves.
@@ -294,6 +295,9 @@ extern "C"
                                        const char * const assetRegex,
                                        const char * const ** const assetPaths,
                                        size_t * const numAssets);
+
+  namespace libbsa {struct BsaAsset;};
+    LIBBSA const std::list<libbsa::BsaAsset> &bsa_get_raw_assets(bsa_handle bh);
 
     /**
         @brief Checks if a specific asset is in a BSA.
