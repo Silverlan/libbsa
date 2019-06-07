@@ -17,18 +17,21 @@ add_definitions(-DBOOST_ALL_DYN_LINK)
 option(BUILD_SHARED_LIBS "Build a shared library" ON)
 option(PROJECT_STATIC_RUNTIME "Build with static runtime libs (/MT)" OFF)
 
-ExternalProject_Add(zlib
-                    PREFIX "external"
-                    URL "https://zlib.net/zlib-1.2.11.tar.gz"
-                    INSTALL_COMMAND "")
-ExternalProject_Get_Property(zlib SOURCE_DIR BINARY_DIR)
-set (ZLIB_INCLUDE_DIRS ${SOURCE_DIR} ${BINARY_DIR})
-IF (MSVC)
-    set (ZLIB_LIBRARIES optimized "${BINARY_DIR}/${CMAKE_CFG_INTDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX}"
-                    debug "${BINARY_DIR}/${CMAKE_CFG_INTDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstaticd${CMAKE_STATIC_LIBRARY_SUFFIX}")
-ELSE ()
-    set (ZLIB_LIBRARIES "${BINARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}z${CMAKE_STATIC_LIBRARY_SUFFIX}")
-ENDIF ()
+#ExternalProject_Add(zlib
+#                    PREFIX "external"
+#                    URL "https://zlib.net/zlib-1.2.11.tar.gz"
+#                    INSTALL_COMMAND "")
+#ExternalProject_Get_Property(zlib SOURCE_DIR BINARY_DIR)
+#set (ZLIB_INCLUDE_DIRS ${SOURCE_DIR} ${BINARY_DIR})
+#IF (MSVC)
+#    set (ZLIB_LIBRARIES optimized "${BINARY_DIR}/${CMAKE_CFG_INTDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstatic${CMAKE_STATIC_LIBRARY_SUFFIX}"
+#                    debug "${BINARY_DIR}/${CMAKE_CFG_INTDIR}/${CMAKE_STATIC_LIBRARY_PREFIX}zlibstaticd${CMAKE_STATIC_LIBRARY_SUFFIX}")
+#ELSE ()
+#    set (ZLIB_LIBRARIES "${BINARY_DIR}/${CMAKE_STATIC_LIBRARY_PREFIX}z${CMAKE_STATIC_LIBRARY_SUFFIX}")
+#ENDIF ()
+
+#set (ZLIB_INCLUDE_DIRS ${DEPENDENCY_ZLIB_INCLUDE})
+#set (ZLIB_LIBRARIES ${DEPENDENCY_ZLIB_LIBRARY})
 
 ExternalProject_Add(GTest
                     PREFIX "external"
