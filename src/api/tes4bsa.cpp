@@ -350,7 +350,18 @@ namespace libbsa {
                 throw error(LIBBSA_ERROR_NO_MEM, e.what());
             }
 
-            in.seekg(data.offset, ios_base::beg);
+			//check if file name is in the way
+			std::vector<char> headerPath;
+			auto l = strlen(data.path.c_str());
+			headerPath.resize(l);
+			in.seekg(data.offset + 1, ios_base::beg);
+			in.read(headerPath.data(), l);
+			uint32_t skipOffset = 0;
+			if (_strnicmp(headerPath.data(), data.path.c_str(), strlen(data.path.c_str())) == 0)
+				skipOffset = strlen(data.path.c_str()) + 1;
+
+			auto offset = data.offset +skipOffset;
+            in.seekg(offset, ios_base::beg);
             in.read(reinterpret_cast<char*>(outBuffer), outSize);
 
             // If file is compressed, need to uncompress it with zlib.
